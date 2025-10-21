@@ -1,3 +1,5 @@
+# IN PROGRESS... - NOT FOR ASSESMENT
+
 # A1 Report
 
 You can also write your report on the Gitlab (or write a PDF).
