@@ -1,0 +1,5 @@
+- what about optional endpoints for collector?
+- scaling to increase throughtput (what about shared volume for sections?)
+- how many cameras there should be per section? how many sections?
+- kubernetes
+- google cloud

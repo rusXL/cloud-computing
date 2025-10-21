@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: face-recognition
+  namespace: a1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: face-recognition
+  template:
+    metadata:
+      labels:
+        app: face-recognition
+    spec:
+      containers:
+      - name: face-recognition
+        image: ccuni/face-recognition-service-2025w
+        resources:
+          limits:
+            cpu: "1.5"
+            memory: "512Mi"

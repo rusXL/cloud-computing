@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alert
+  namespace: a1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alert
+  template:
+    metadata:
+      labels:
+        app: alert
+    spec:
+      containers:
+      - name: alert
+        image: ccuni/alert-service-2025w
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "256Mi"

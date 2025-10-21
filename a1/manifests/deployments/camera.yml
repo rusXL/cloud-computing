@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: camera
+  namespace: a1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: camera
+  template:
+    metadata:
+      labels:
+        app: camera
+    spec:
+      containers:
+      - name: camera
+        image: ccuni/camera-service-2025w
+        ports:
+        - containerPort: 80
+        env:
+        - name: SECTION_ID
+          value: "1"
+        - name: POSITION
+          value: "entry"
+        resources:
+          limits:
+            cpu: "0.3"
+            memory: "128Mi"

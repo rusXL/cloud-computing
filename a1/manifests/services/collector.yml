@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: collector
+  namespace: a1-app
+spec:
+  selector:
+    app: collector
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 32700
+  type: NodePort

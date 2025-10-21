@@ -1,0 +1,94 @@
+networks:
+  localnet:
+    driver: bridge
+
+services:
+  camera:
+    image: ccuni/camera-service-2025w
+    container_name: camera
+    ports:
+      - "31100:80"
+    environment:
+      - SECTION_ID=1
+      - POSITION=entry
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 128M
+    networks:
+      - localnet
+
+  image-analysis:
+    image: ccuni/image-analysis-service-2025w
+    container_name: image-analysis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 512M
+    networks:
+      - localnet
+
+  face-recognition:
+    image: ccuni/face-recognition-service-2025w
+    container_name: face-recognition
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 512M
+    networks:
+      - localnet
+
+  section:
+    image: ccuni/section-service-2025w
+    container_name: section
+    ports:
+      - "31400:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    networks:
+      - localnet
+
+  alert:
+    image: ccuni/alert-service-2025w
+    container_name: alert
+    ports:
+      - "31500:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    networks:
+      - localnet
+
+  collector:
+    build: ./collector
+    container_name: collector
+    ports:
+      - "31700:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
+    networks:
+      - localnet
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - image-analysis
+      - face-recognition
+      - section
+      - alert

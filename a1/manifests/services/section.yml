@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: section
+  namespace: a1-app
+spec:
+  selector:
+    app: section
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 32400
+  type: NodePort

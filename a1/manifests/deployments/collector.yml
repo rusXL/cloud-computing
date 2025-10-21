@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collector
+  namespace: a1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collector
+  template:
+    metadata:
+      labels:
+        app: collector
+    spec:
+      containers:
+        - name: collector
+          image: rusxl/collector
+          ports:
+            - containerPort: 80
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            limits:
+              cpu: "1.0"
+              memory: "256Mi"
