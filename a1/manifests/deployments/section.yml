@@ -14,11 +14,19 @@ spec:
         app: section
     spec:
       containers:
-      - name: section
-        image: ccuni/section-service-2025w
-        ports:
-        - containerPort: 80
-        resources:
-          limits:
-            cpu: "0.5"
-            memory: "256Mi"
+        - name: section
+          image: ccuni/section-service-2025w
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /readinessProbe
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /livenessProbe
+              port: 80
+          resources:
+            limits:
+              cpu: "0.25"
+              memory: "256Mi"

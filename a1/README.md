@@ -10,12 +10,29 @@ The submission should be in `a1` folder in your repository. Put all your kuberne
 
 #### Docker (local dev):
 
+Build, tag, push
+
+```bash
+docker build -t collector:latest collector/
+docker tag collector:latest rusxl/collector:latest
+docker push rusxl/collector:latest
+```
+
 Start camera:
 
 ```bash
-curl -X POST http://localhost:31100/stream \
+curl -X POST http://localhost:32100/stream \
  -H "Content-Type: application/json" \
- -d '{"destination": "http://collector/frame", "max-frames": 1}'
+ -d '{"destination": "http://collector/frame", "delay": 1, "max-frames": 1}'
+```
+
+```bash
+kubectl get pods -n a1-app
+kubectl logs face-recognition-57db79755b-6zmm2 -n a1-app -f
+```
+
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 Restart containers:

@@ -18,10 +18,20 @@ spec:
           image: rusxl/collector
           ports:
             - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /readinessProbe
+              port: 80
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /livenessProbe
+              port: 80
+            timeoutSeconds: 10
           env:
             - name: PYTHONUNBUFFERED
               value: "1"
           resources:
             limits:
               cpu: "1.0"
-              memory: "256Mi"
+              memory: "512Mi"

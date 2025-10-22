@@ -15,7 +15,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.3"
+          cpus: "0.25"
           memory: 128M
     networks:
       - localnet
@@ -27,8 +27,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.5"
-          memory: 512M
+          cpus: "2"
+          memory: 1G
     networks:
       - localnet
 
@@ -39,8 +39,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.5"
-          memory: 512M
+          cpus: "2"
+          memory: 1G
     networks:
       - localnet
 
@@ -53,7 +53,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
+          cpus: "0.25"
           memory: 256M
     networks:
       - localnet
@@ -67,7 +67,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"
+          cpus: "0.25"
           memory: 256M
     networks:
       - localnet
@@ -82,7 +82,7 @@ services:
       resources:
         limits:
           cpus: "1.0"
-          memory: 256M
+          memory: 512M
     networks:
       - localnet
     environment:

@@ -4,7 +4,7 @@ metadata:
   name: camera
   namespace: a1-app
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: camera
@@ -14,16 +14,24 @@ spec:
         app: camera
     spec:
       containers:
-      - name: camera
-        image: ccuni/camera-service-2025w
-        ports:
-        - containerPort: 80
-        env:
-        - name: SECTION_ID
-          value: "1"
-        - name: POSITION
-          value: "entry"
-        resources:
-          limits:
-            cpu: "0.3"
-            memory: "128Mi"
+        - name: camera
+          image: ccuni/camera-service-2025w
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /readinessProbe
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /livenessProbe
+              port: 80
+          env:
+            - name: SECTION_ID
+              value: "1"
+            - name: POSITION
+              value: "entry"
+          resources:
+            limits:
+              cpu: "0.25"
+              memory: "128Mi"
