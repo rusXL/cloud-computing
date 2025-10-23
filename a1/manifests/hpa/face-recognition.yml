@@ -25,6 +25,6 @@ spec:
           averageUtilization: 80
   behavior:
     scaleUp:
-      stabilizationWindowSeconds: 5 # react quickly
+      stabilizationWindowSeconds: 14 # react quickly
     scaleDown:
       stabilizationWindowSeconds: 30

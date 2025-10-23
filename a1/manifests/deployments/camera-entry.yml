@@ -1,17 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: camera
+  name: camera-entry
   namespace: a1-app
 spec:
   replicas: 4
   selector:
     matchLabels:
       app: camera
+      role: entry
   template:
     metadata:
       labels:
         app: camera
+        role: entry
     spec:
       containers:
         - name: camera

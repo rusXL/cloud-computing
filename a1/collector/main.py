@@ -4,6 +4,7 @@ import asyncio
 import httpx
 from models import Frame
 from contextlib import asynccontextmanager
+import os
 
 
 image_analysis_lock = asyncio.Lock()
@@ -12,11 +13,11 @@ section_lock = asyncio.Lock()
 alert_lock = asyncio.Lock()
 failed_requests_lock = asyncio.Lock()
 
-CAMERA = "http://camera"
-IMAGE_ANALYSIS = "http://image-analysis"
-FACE_RECOGNITION = "http://face-recognition"
-SECTION = "http://section"
-ALERT = "http://alert"
+CAMERA = os.getenv("CAMERA_URL", "http://camera")
+IMAGE_ANALYSIS = os.getenv("IMAGE_ANALYSIS_URL", "http://image-analysis")
+FACE_RECOGNITION = os.getenv("FACE_RECOGNITION_URL", "http://face-recognition")
+SECTION = os.getenv("SECTION_URL", "http://section")
+ALERT = os.getenv("ALERT_URL", "http://alert")
 
 
 http_client: httpx.AsyncClient
@@ -110,33 +111,8 @@ async def liveness_probe():
     return "OK"
 
 
-# collector is ready when all dependecies are ready
 @app.get("/readinessProbe")
 async def readiness_probe():
-    return "OK"
-    # """Collector is ready if all dependent services respond successfully."""
-    # dependencies = {
-    #     "camera": (f"{CAMERA}/readinessProbe", image_analysis_lock),
-    #     "image-analysis": (f"{IMAGE_ANALYSIS}/readinessProbe", image_analysis_lock),
-    #     "face-recognition": (
-    #         f"{FACE_RECOGNITION}/readinessProbe",
-    #         face_recognition_lock,
-    #     ),
-    #     "section": (f"{SECTION}/readinessProbe", section_lock),
-    #     "alert": (f"{ALERT}/readinessProbe", alert_lock),
-    # }
-
-    # tasks = [
-    #     asyncio.create_task(forward_request(url, {}, lock, name, "GET", 0))
-    #     for name, (url, lock) in dependencies.items()
-    # ]
-
-    # responses = await asyncio.gather(*tasks, return_exceptions=True)
-
-    # for r in responses:
-    #     if r and r.status_code == 200:
-    #         continue
-    #     else:
-    #         raise HTTPException(status_code=503, detail="Dependencies not ready")
-
-    return "OK"
+    if http_client is None or http_client.is_closed:
+        raise HTTPException(status_code=503, detail="HTTP client not ready")
+    return {"status": "ready"}

@@ -8,7 +8,17 @@ The submission should be in `a1` folder in your repository. Put all your kuberne
 
 ### Useful commands
 
-#### Docker (local dev):
+Ingress
+
+```bash
+kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
+```
+
+Metrics
+
+```bash
+watch -n 1 "kubectl top pods -n a1-app"
+```
 
 Build, tag, push
 
@@ -18,7 +28,16 @@ docker tag collector:latest rusxl/collector:latest
 docker push rusxl/collector:latest
 ```
 
-Start camera:
+Delete everything from manifests
+
+```bash
+kubectl delete all --all -n a1-app
+kubectl delete pvc --all -n a1-app
+kubectl delete configmap --all -n a1-app
+kubectl delete secret --all -n a1-app
+```
+
+Start camera
 
 ```bash
 curl -X POST http://localhost:32100/stream \
@@ -26,25 +45,36 @@ curl -X POST http://localhost:32100/stream \
  -d '{"destination": "http://collector/frame", "delay": 1, "max-frames": 1}'
 ```
 
+Get from sections
+
+```bash
+curl -X GET "http://localhost:32400/persons?from=2010-10-14T11:19:18&to=2025-10-25T10:00:00&aggregate=count" \
+ -H "Content-Type: application/json"
+```
+
+Debugging
+
 ```bash
 kubectl get pods -n a1-app
-kubectl logs face-recognition-57db79755b-6zmm2 -n a1-app -f
+kubectl logs section-666df4bbdf-w86jw -c FIXME_CONTAINER -n a1-app -f
 ```
 
 ```bash
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+kubectl describe pod FIXME_POD -n a1-app
 ```
 
-Restart containers:
+```bash
+kubectl get pv
+```
+
+Restart docker containers
 
 ```bash
 docker-compose down && docker-compose build && docker-compose up
 ```
 
-Install new python package:
+Install new python package
 
 ```bash
 pip install FIXME && pip freeze -> collector/requirements.txt
 ```
-
-#### Kubernetes (local prod)

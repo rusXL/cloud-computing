@@ -30,3 +30,17 @@ spec:
             limits:
               cpu: "0.25"
               memory: "256Mi"
+          env:
+            - name: EXTERNAL_MONGODB_URL
+              value: "mongodb://localhost:27017"
+        - name: mongo
+          image: mongodb/mongodb-community-server:7.0-ubi8
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-pv
+              mountPath: /data/db
+      volumes:
+        - name: mongo-pv
+          persistentVolumeClaim:
+            claimName: mongo-pvc

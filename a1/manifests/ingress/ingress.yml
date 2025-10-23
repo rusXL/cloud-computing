@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  namespace: a1-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /camera/(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: camera
+                port:
+                  number: 80
+          - path: /section/(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: section
+                port:
+                  number: 80
+          - path: /alert/(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: alert
+                port:
+                  number: 80

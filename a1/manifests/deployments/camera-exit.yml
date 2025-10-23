@@ -1,37 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: collector
+  name: camera-exit
   namespace: a1-app
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
-      app: collector
+      app: camera # if a pod exists with these labels I manage it
+      role: exit
   template:
     metadata:
       labels:
-        app: collector
+        app: camera # these are applied to every pod created by this Deployment
+        role: exit
     spec:
       containers:
-        - name: collector
-          image: rusxl/collector
+        - name: camera
+          image: ccuni/camera-service-2025w
           ports:
             - containerPort: 80
           readinessProbe:
             httpGet:
               path: /readinessProbe
               port: 80
-            timeoutSeconds: 10
           livenessProbe:
             httpGet:
               path: /livenessProbe
               port: 80
-            timeoutSeconds: 10
           env:
-            - name: PYTHONUNBUFFERED
+            - name: SECTION_ID
               value: "1"
+            - name: POSITION
+              value: "entry"
           resources:
             limits:
-              cpu: "0.5"
-              memory: "256Mi"
+              cpu: "0.25"
+              memory: "128Mi"
