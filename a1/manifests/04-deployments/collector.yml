@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collector
+  namespace: a1-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collector
+  template:
+    metadata:
+      labels:
+        app: collector
+    spec:
+      containers:
+        - name: collector
+          image: rusxl/collector
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /readinessProbe
+              port: 80
+            timeoutSeconds: 10
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /livenessProbe
+              port: 80
+            timeoutSeconds: 10
+            periodSeconds: 15
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "350m"
+              memory: "250Mi"

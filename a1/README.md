@@ -20,6 +20,10 @@ Metrics
 watch -n 1 "kubectl top pods -n a1-app"
 ```
 
+```bash
+watch -n 1 "kubectl get hpa -n a1-app"
+```
+
 Build, tag, push
 
 ```bash
@@ -48,15 +52,15 @@ curl -X POST http://localhost:8080/camera/stream \
 Get from sections
 
 ```bash
-curl -X GET "http://localhost:8080/section/persons?from=2010-10-14T11:19:18&to=2025-10-25T10:00:00&aggregate=count" \
- -H "Content-Type: application/json"
+watch -n 2 'curl -X GET "http://136.114.69.16/section/persons?from=2010-10-14T11:19:18&to=2025-11-30T10:00:00&aggregate=count" \
+ -H "Content-Type: application/json"'
 ```
 
 Debugging
 
 ```bash
 kubectl get pods -n a1-app
-kubectl logs section-666df4bbdf-w86jw -c FIXME_CONTAINER -n a1-app -f
+kubectl logs section-666df4bbdf-w86jw -n a1-app -f
 ```
 
 ```bash

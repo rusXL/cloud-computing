@@ -59,9 +59,7 @@ async def image_analysis(payload: Dict[str, Any]):
 async def persons(request: Request, background_tasks: BackgroundTasks):
     payload = await request.json()
     persons = payload.get("persons", [])
-    if not persons:
-        print("No persons detected.")
-    else:
+    if persons:
         background_tasks.add_task(
             forward_request, f"{SECTION}/persons", payload, "Section"
         )
@@ -82,9 +80,7 @@ async def face_recognition(payload: Dict[str, Any]):
 async def known_persons(request: Request, background_tasks: BackgroundTasks):
     payload = await request.json()
     known_persons = payload.get("known-persons", [])
-    if not known_persons:
-        print("No individuals recognized.")
-    else:
+    if known_persons:
         background_tasks.add_task(forward_request, f"{ALERT}/alerts", payload, "Alert")
     return "Accepted"
 

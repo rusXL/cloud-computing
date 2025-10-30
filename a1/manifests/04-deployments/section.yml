@@ -27,20 +27,12 @@ spec:
               path: /livenessProbe
               port: 80
           resources:
+            requests:
+              cpu: "10m"
+              memory: "130Mi"
             limits:
-              cpu: "0.25"
-              memory: "256Mi"
+              cpu: "100m"
+              memory: "175Mi"
           env:
             - name: EXTERNAL_MONGODB_URL
-              value: "mongodb://localhost:27017"
-        - name: mongo
-          image: mongodb/mongodb-community-server:7.0-ubi8
-          ports:
-            - containerPort: 27017
-          volumeMounts:
-            - name: mongo-pv
-              mountPath: /data/db
-      volumes:
-        - name: mongo-pv
-          persistentVolumeClaim:
-            claimName: mongo-pvc
+              value: "mongodb://mongo:27017"

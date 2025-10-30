@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: camera-entry
+  name: camera-exit
   namespace: a1-app
 spec:
-  replicas: 4
+  replicas: 0
   selector:
     matchLabels:
-      app: camera
-      role: entry
+      app: camera # if a pod exists with these labels I manage it
+      role: exit
   template:
     metadata:
       labels:
-        app: camera
-        role: entry
+        app: camera # these are applied to every pod created by this Deployment
+        role: exit
     spec:
       containers:
         - name: camera
@@ -34,6 +34,9 @@ spec:
             - name: POSITION
               value: "entry"
           resources:
+            requests:
+              cpu: "10m"
+              memory: "100Mi"
             limits:
-              cpu: "0.25"
-              memory: "128Mi"
+              cpu: "50m"
+              memory: "125Mi"

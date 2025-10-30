@@ -1,32 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: alert
+  name: image-analysis
   namespace: a1-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: alert
+      app: image-analysis
   template:
     metadata:
       labels:
-        app: alert
+        app: image-analysis
     spec:
       containers:
-        - name: alert
-          image: ccuni/alert-service-2025w
-          ports:
-            - containerPort: 80
+        - name: image-analysis
+          image: ccuni/image-analysis-service-2025w
           readinessProbe:
             httpGet:
               path: /readinessProbe
               port: 80
+            timeoutSeconds: 10
+            periodSeconds: 15
           livenessProbe:
             httpGet:
               path: /livenessProbe
               port: 80
+            timeoutSeconds: 10
+            periodSeconds: 15
           resources:
+            requests:
+              cpu: "550m"
+              memory: "700Mi"
             limits:
-              cpu: "0.25"
-              memory: "256Mi"
+              cpu: "1000m"
+              memory: "850Mi"

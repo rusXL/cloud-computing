@@ -1,37 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: collector
+  name: alert
   namespace: a1-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: collector
+      app: alert
   template:
     metadata:
       labels:
-        app: collector
+        app: alert
     spec:
       containers:
-        - name: collector
-          image: rusxl/collector
+        - name: alert
+          image: ccuni/alert-service-2025w
           ports:
             - containerPort: 80
           readinessProbe:
             httpGet:
               path: /readinessProbe
               port: 80
-            timeoutSeconds: 10
           livenessProbe:
             httpGet:
               path: /livenessProbe
               port: 80
-            timeoutSeconds: 10
-          env:
-            - name: PYTHONUNBUFFERED
-              value: "1"
           resources:
+            requests:
+              cpu: "10m"
+              memory: "80Mi"
             limits:
-              cpu: "0.5"
-              memory: "256Mi"
+              cpu: "100m"
+              memory: "150Mi"

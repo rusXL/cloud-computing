@@ -20,11 +20,18 @@ spec:
             httpGet:
               path: /readinessProbe
               port: 80
+            timeoutSeconds: 10
+            periodSeconds: 15
           livenessProbe:
             httpGet:
               path: /livenessProbe
               port: 80
+            timeoutSeconds: 10
+            periodSeconds: 15
           resources:
+            requests:
+              cpu: "600m"
+              memory: "650Mi"
             limits:
-              cpu: "1"
-              memory: "1Gi"
+              cpu: "1000m" # Allows bursting when needed
+              memory: "800Mi"
