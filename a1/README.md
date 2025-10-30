@@ -40,7 +40,7 @@ kubectl delete secret --all -n a1-app
 Start camera
 
 ```bash
-curl -X POST http://localhost:32100/stream \
+curl -X POST http://localhost:8080/camera/stream \
  -H "Content-Type: application/json" \
  -d '{"destination": "http://collector/frame", "delay": 1, "max-frames": 1}'
 ```
@@ -48,7 +48,7 @@ curl -X POST http://localhost:32100/stream \
 Get from sections
 
 ```bash
-curl -X GET "http://localhost:32400/persons?from=2010-10-14T11:19:18&to=2025-10-25T10:00:00&aggregate=count" \
+curl -X GET "http://localhost:8080/section/persons?from=2010-10-14T11:19:18&to=2025-10-25T10:00:00&aggregate=count" \
  -H "Content-Type: application/json"
 ```
 
