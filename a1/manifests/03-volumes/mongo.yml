@@ -22,6 +22,9 @@ spec:
             requests:
               cpu: 10m
               memory: "150Mi"
+            limits:
+              cpu: 100m
+              memory: "200Mi"
           volumeMounts:
             - name: mongo-pv
               mountPath: /data/db
