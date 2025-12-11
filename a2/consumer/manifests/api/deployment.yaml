@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-api
+  namespace: leaf-image-management-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-api
+  template:
+    metadata:
+      labels:
+        app: consumer-api
+    spec:
+      containers:
+        - name: consumer-api
+          image: rusxl/consumer-api:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGO
+              value: mongodb://mongodb-consumer:27017
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 80
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "64Mi"
+            limits:
+              cpu: "50m"
+              memory: "128Mi"

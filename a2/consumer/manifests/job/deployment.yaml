@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-job
+  namespace: leaf-image-management-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-job
+  template:
+    metadata:
+      labels:
+        app: consumer-job
+    spec:
+      containers:
+        - name: consumer-job
+          image: rusxl/consumer-job:latest
+          env:
+            - name: KAFKA
+              value: kafka-service:9092
+            - name: MONGO
+              value: mongodb://mongodb-consumer:27017
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+            limits:
+              cpu: "50m"
+              memory: "64Mi"

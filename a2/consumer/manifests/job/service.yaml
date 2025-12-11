@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer-job
+  namespace: leaf-image-management-system
+spec:
+  selector:
+    app: consumer-job
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
