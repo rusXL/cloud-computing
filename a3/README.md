@@ -19,6 +19,10 @@ A distributed key-value storage system using Kubernetes with hash-based routing,
 
 ## Design Decisions
 
+### Data | Use case
+
+I decided that we will store string entries. I allow key to be any string, and value to be any string. The use case could be a could storage for markdown documents.
+
 ### Hash Function: SHA256 with Modulo
 
 ```python
