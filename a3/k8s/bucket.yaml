@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bucket
+  namespace: cloud-storage
+spec:
+  clusterIP: None # headless service
+  selector:
+    app: bucket
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bucket
+  namespace: cloud-storage
+spec:
+  serviceName: bucket
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bucket
+  template:
+    metadata:
+      labels:
+        app: bucket
+    spec:
+      containers:
+        - name: bucket
+          image: rusxl/cloud-storage-bucket:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: DATA_DIR
+              value: "/data"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
